@@ -21,6 +21,7 @@ public class DigitalConversion {
 
     int getWalshFunctionValue(int k, int t){
         int walshFunctionValue = 0;
+
         return  walshFunctionValue;
     }
 
@@ -31,6 +32,15 @@ public class DigitalConversion {
         }
         return -1;
 
+    }
+
+    ArrayList<Integer> getBinaryNumber(int number){
+        ArrayList<Integer> binary = new ArrayList<>();
+        while(number > 0 ){
+            binary.add(number%2);
+            number -= 2;
+        }
+        return binary;
     }
 
     ArrayList<Double> getCoeff(){
