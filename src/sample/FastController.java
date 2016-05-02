@@ -33,7 +33,7 @@ public class FastController {
     @FXML
     public Label fast;
 
-    int N = 8;
+    int N = 16;
 
 
     public  void initialize(){
@@ -42,11 +42,11 @@ public class FastController {
         XYChart.Series seriesOrigin = new XYChart.Series<>();
         seriesOrigin.setName("Original Function");
         FastConversion conversion = new FastConversion();
-        ArrayList<Double> functionValue = conversion.getFunction();
+        Double[] functionValue = conversion.getFunction();
         for(Integer i = 0; i < N; i++){
             Double temp = 2 * Math.PI / (N) * i;
             temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
-            seriesOrigin.getData().add(new XYChart.Data<>(temp.toString(), functionValue.get(i)));
+            seriesOrigin.getData().add(new XYChart.Data<>(temp.toString(), functionValue[i]));
         }
         origin.getData().add(seriesOrigin);
 
@@ -54,11 +54,11 @@ public class FastController {
         convert.getYAxis().setAutoRanging(true);
         XYChart.Series seriesAbsolute = new XYChart.Series<>();
         seriesAbsolute.setName("Convert Function");
-        ArrayList<Double> function = conversion.fastWalshTransform(functionValue, 1);
+        Double[] function = conversion.fastWalshTransform(functionValue, 1);
         for(Integer i = 0; i < N; i++){
             Double temp = 2 * Math.PI / (N) * i;
             temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
-            seriesAbsolute.getData().add(new XYChart.Data<>(temp.toString(), function.get(i)));
+            seriesAbsolute.getData().add(new XYChart.Data<>(temp.toString(), function[i]));
         }
         convert.getData().add(seriesAbsolute);
 
@@ -66,27 +66,17 @@ public class FastController {
         reverse.getYAxis().setAutoRanging(true);
         XYChart.Series seriesReverse = new XYChart.Series<>();
         seriesReverse.setName("Reverse  Function");
-        ArrayList<Double> functionReverse = conversion.fastWalshTransform(function, -1);
+        Double[] functionReverse = conversion.fastWalshTransform(function, -1);
         for(Integer i = 0; i < N; i++){
             Double temp = 2 * Math.PI / (N) * i;
             temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
-            seriesReverse.getData().add(new XYChart.Data<>(temp.toString(), functionReverse.get(i) / N));
+            seriesReverse.getData().add(new XYChart.Data<>(temp.toString(), functionReverse[i] / N));
         }
         reverse.getData().add(seriesReverse);
 
         int countOperation;
-        countOperation = conversion.getMulCount()+conversion.getSumCount();
+        countOperation = conversion.getSumCount();
         fast.setText(fast.getText()+countOperation);
-
-
-
     }
-    public void changeScene(ActionEvent event)throws IOException {
-        Parent original = FXMLLoader.load(getClass().getResource("digitalConversion.fxml"));
-        Scene originalScene = new Scene(original);
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.hide();
-        stage.setScene(originalScene);
-        stage.show();
-    }
+
 }

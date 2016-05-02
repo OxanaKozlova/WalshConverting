@@ -39,7 +39,6 @@
                 </LineChart>
             </children>
         </GridPane>
-        <Button fx:id="toDirect" layoutX="100.0" layoutY="649.0" mnemonicParsing="false" onAction="#changeScene" prefHeight="25.0" prefWidth="132.0" text="To Direct Conversion" />
       <Label fx:id="fast" layoutX="100.0" layoutY="580.0" text="Fast conversion: " />
       <LineChart fx:id="convert" layoutX="394.0" layoutY="347.0" prefHeight="358.0" prefWidth="601.0">
          <xAxis>
