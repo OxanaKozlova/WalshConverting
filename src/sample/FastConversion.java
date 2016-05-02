@@ -16,45 +16,49 @@ public class FastConversion {
     int mulCount = 0;
     int N = 8;
 
-    public ArrayList<Complex> getFunction(){
-        ArrayList<Complex> array = new ArrayList<>();
-        for(int i = 0; i < N; i++){
-            array.add(new Complex((Math.cos(4*Math.PI*i/N)+Math.sin(2*Math.PI*i/N)),0));
+    public ArrayList<Double> getFunction(){
+        ArrayList<Double> array = new ArrayList<>();
+        for(int i = 0; i < N; i++) {
+            array.add(Math.cos(4 * Math.PI * i / N) + Math.sin(2 * Math.PI * i / N));
+            System.out.println(array.get(i));
         }
         return array ;
     }
 
-    public ArrayList<Complex> fft(ArrayList<Complex> variables, int dir ) {
+    public ArrayList<Double> fastWalshTransform(ArrayList<Double> variables, int sign ) {
         if (variables.size() == 1) {
-            ArrayList<Complex> temp = new ArrayList<>();
-            temp.add(variables.get(0));
-            return temp;
+            return variables;
         }
-        ArrayList< Complex> even = new ArrayList<>();
-        ArrayList<Complex> odd = new ArrayList<>();
-        for (int i = 0; i < (variables.size() / 2); i++) {
-            even.add( variables.get(2*i));
-            odd.add(variables.get(2 * i + 1));
-        }
-        ArrayList<Complex> beven = fft(even, dir);
-        ArrayList<Complex> bodd = fft(odd, dir);
+
         int n = variables.size();
-        Complex wn = new Complex(Math.cos(2 * Math.PI / n), dir * Math.sin(2 * Math.PI / n));
+        System.out.println(n);
+        ArrayList<Double> b = new ArrayList<>();
+        ArrayList<Double> c = new ArrayList<>();
 
-        ArrayList<Complex> result = new ArrayList<Complex>(n);
-        for(int i = 0; i<n; i++){
-            result.add(new Complex(0,0));
-        }
-        Complex w = new Complex(1, 0);
         for (int i = 0; i < n / 2; i++) {
-            Complex tempValue = new Complex (bodd.get(i).times(w).re(), bodd.get(i).times(w).im());
-            result.set(i,beven.get(i).plus(tempValue));
-            result.set((i+n/2), beven.get(i).minus(tempValue));
-
-            w = w.times(wn);
+            System.out.println(i);
+            System.out.println(variables.get(i));
+            b.add(i, (variables.get(i) + variables.get(i + n / 2)));
+            c.add(i, (variables.get(i) - variables.get(i + n / 2)));
 
             sumCount ++;
-            mulCount++;
+        }
+
+        ArrayList<Double> left = fastWalshTransform(b, sign);
+        ArrayList<Double> right = fastWalshTransform(c, sign);
+        ArrayList<Double> result = new ArrayList<>();
+
+        if(sign > 0) {
+            for(int i = 0; i < n / 2; i++) {
+                result.add(i, (left.get(i) / 2));
+                result.add((i + n / 2), (right.get(i) / 2));
+            }
+        }
+        else {
+            for(int i = 0; i < n / 2; i++) {
+                result.add(i, left.get(i));
+                result.add(i + n / 2, right.get(i));
+            }
         }
         return result;
     }

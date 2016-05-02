@@ -41,12 +41,12 @@ public class FastController {
         origin.getYAxis().setAutoRanging(true);
         XYChart.Series seriesOrigin = new XYChart.Series<>();
         seriesOrigin.setName("Original Function");
-        FastConversion functionOrigin = new FastConversion();
-        ArrayList<Complex> functionValue = functionOrigin.getFunction();
-        for(Integer i=0; i<16; i++){
-            Double temp = 2*Math.PI/(16)*i;
+        FastConversion conversion = new FastConversion();
+        ArrayList<Double> functionValue = conversion.getFunction();
+        for(Integer i = 0; i < N; i++){
+            Double temp = 2 * Math.PI / (N) * i;
             temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
-            seriesOrigin.getData().add(new XYChart.Data<>(temp.toString(), functionValue.get(i).re()));
+            seriesOrigin.getData().add(new XYChart.Data<>(temp.toString(), functionValue.get(i)));
         }
         origin.getData().add(seriesOrigin);
 
@@ -54,12 +54,11 @@ public class FastController {
         convert.getYAxis().setAutoRanging(true);
         XYChart.Series seriesAbsolute = new XYChart.Series<>();
         seriesAbsolute.setName("Convert Function");
-        FastConversion function = new FastConversion();
-        ArrayList<Double> functionAbsolute = function.getAbsolute(function.fft(function.getFunction(), 1));
-        for(Integer i=0; i<16; i++){
-            Double temp = 2*Math.PI/(16)*i;
+        ArrayList<Double> function = conversion.fastWalshTransform(functionValue, 1);
+        for(Integer i = 0; i < N; i++){
+            Double temp = 2 * Math.PI / (N) * i;
             temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
-            seriesAbsolute.getData().add(new XYChart.Data<>(temp.toString(), functionAbsolute.get(i)));
+            seriesAbsolute.getData().add(new XYChart.Data<>(temp.toString(), function.get(i)));
         }
         convert.getData().add(seriesAbsolute);
 
@@ -67,18 +66,16 @@ public class FastController {
         reverse.getYAxis().setAutoRanging(true);
         XYChart.Series seriesReverse = new XYChart.Series<>();
         seriesReverse.setName("Reverse  Function");
-        FastConversion reverseConversion = new FastConversion();
-        ArrayList<Complex> conversion = reverseConversion.fft(reverseConversion.getFunction(), 1);
-        ArrayList<Complex> functionReverse = reverseConversion.fft(conversion, -1);
-        for(Integer i=0; i<16; i++){
-            Double temp = 2*Math.PI/(16)*i;
+        ArrayList<Double> functionReverse = conversion.fastWalshTransform(function, -1);
+        for(Integer i = 0; i < N; i++){
+            Double temp = 2 * Math.PI / (N) * i;
             temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
-            seriesReverse.getData().add(new XYChart.Data<>(temp.toString(), functionReverse.get(i).re() / N));
+            seriesReverse.getData().add(new XYChart.Data<>(temp.toString(), functionReverse.get(i) / N));
         }
         reverse.getData().add(seriesReverse);
 
         int countOperation;
-        countOperation = function.getMulCount()+function.getSumCount();
+        countOperation = conversion.getMulCount()+conversion.getSumCount();
         fast.setText(fast.getText()+countOperation);
 
 
