@@ -33,6 +33,8 @@ public class FastController {
     @FXML
     public Label fast;
 
+    int N = 8;
+
 
     public  void initialize(){
         origin.getXAxis().setAutoRanging(true);
@@ -71,7 +73,7 @@ public class FastController {
         for(Integer i=0; i<16; i++){
             Double temp = 2*Math.PI/(16)*i;
             temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
-            seriesReverse.getData().add(new XYChart.Data<>(temp.toString(), functionReverse.get(i).re()/16));
+            seriesReverse.getData().add(new XYChart.Data<>(temp.toString(), functionReverse.get(i).re() / N));
         }
         reverse.getData().add(seriesReverse);
 

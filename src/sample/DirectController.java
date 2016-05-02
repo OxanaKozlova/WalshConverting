@@ -33,45 +33,48 @@ public class DirectController {
     @FXML
     public Label direct;
 
-    public  void initialize(){
-//        origin.getXAxis().setAutoRanging(true);
-//        origin.getYAxis().setAutoRanging(true);
-//        XYChart.Series seriesOrigin = new XYChart.Series<>();
-//        seriesOrigin.setName("Original Function");
-//        DigitalConversion functionOrigin = new DigitalConversion();
-//        for(Integer i=0; i<16; i++){
-//            Double temp = 2*Math.PI/(16)*i;
-//            temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
-//            seriesOrigin.getData().add(new XYChart.Data<>(temp.toString(), functionOrigin.getFunction(i)));
-//        }
-//        origin.getData().add(seriesOrigin);
-//
-//
-//
-//
-//        reverse.getXAxis().setAutoRanging(true);
-//        reverse.getYAxis().setAutoRanging(true);
-//        XYChart.Series seriesReverse = new XYChart.Series<>();
-//        seriesReverse.setName("Reverse  Function");
-//        DigitalConversion reverseConversion = new DigitalConversion();
-//        ArrayList<Complex> functionReverse = reverseConversion.reverseConversion();
-//        for(Integer i=0; i<16; i++){
-//            Double temp = 2*Math.PI/(16)*i;
-//            temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
-//            seriesReverse.getData().add(new XYChart.Data<>(temp.toString(), functionReverse.get(i).re()));
-//        }
-//        reverse.getData().add(seriesReverse);
-//
-//
-//    }
+    int N = 8;
 
-//    public void changeScene(ActionEvent event)throws IOException {
-//        Parent original = FXMLLoader.load(getClass().getResource("fastConversion.fxml"));
-//        Scene originalScene = new Scene(original);
-//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//        stage.hide();
-//        stage.setScene(originalScene);
-//        stage.show();
+    public  void initialize(){
+        origin.getXAxis().setAutoRanging(true);
+        origin.getYAxis().setAutoRanging(true);
+        XYChart.Series seriesOrigin = new XYChart.Series<>();
+        seriesOrigin.setName("Original Function");
+        DigitalConversion functionOrigin = new DigitalConversion();
+        ArrayList<Double> functionValues = functionOrigin.getFunctionValues();
+        for(Integer i=0; i < N; i++){
+            Double temp = 2*Math.PI/(N)*i;
+            temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
+            seriesOrigin.getData().add(new XYChart.Data<>(temp.toString(), functionValues.get(i)));
+        }
+        origin.getData().add(seriesOrigin);
+
+
+
+
+        reverse.getXAxis().setAutoRanging(true);
+        reverse.getYAxis().setAutoRanging(true);
+        XYChart.Series seriesReverse = new XYChart.Series<>();
+        seriesReverse.setName("Reverse  Function");
+        DigitalConversion conversion = new DigitalConversion();
+        ArrayList<Integer> function = conversion.getWalshValues();
+        for(Integer i=0; i < N; i++){
+            Double temp = 2*Math.PI/(N)*i;
+            temp = new BigDecimal(temp).setScale(2, RoundingMode.UP).doubleValue();
+            seriesReverse.getData().add(new XYChart.Data<>(temp.toString(), function.get(i)));
+        }
+        reverse.getData().add(seriesReverse);
+
+
+    }
+
+    public void changeScene(ActionEvent event)throws IOException {
+        Parent original = FXMLLoader.load(getClass().getResource("fastConversion.fxml"));
+        Scene originalScene = new Scene(original);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.hide();
+        stage.setScene(originalScene);
+        stage.show();
 
     }
 
