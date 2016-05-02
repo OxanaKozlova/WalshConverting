@@ -14,15 +14,15 @@ public class FastConversion {
 
     int sumCount = 0;
     int mulCount = 0;
+    int N = 8;
+
     public ArrayList<Complex> getFunction(){
         ArrayList<Complex> array = new ArrayList<>();
-        for(int i = 0; i<16; i++){
-            array.add(new Complex((Math.cos(4*Math.PI*i/16)+Math.sin(2*Math.PI*i/16)),0));
+        for(int i = 0; i < N; i++){
+            array.add(new Complex((Math.cos(4*Math.PI*i/N)+Math.sin(2*Math.PI*i/N)),0));
         }
         return array ;
     }
-
-
 
     public ArrayList<Complex> fft(ArrayList<Complex> variables, int dir ) {
         if (variables.size() == 1) {
@@ -62,7 +62,7 @@ public class FastConversion {
     public ArrayList<Double> getAbsolute(ArrayList<Complex> fftResult){
         ArrayList<Double> absolute = new ArrayList<>();
         for(int i = 0; i<fftResult.size(); i++){
-            absolute.add(fftResult.get(i).abs()/16);
+            absolute.add(fftResult.get(i).abs() / N);
         }
         return absolute;
     }
